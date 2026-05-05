@@ -31,6 +31,11 @@ export default function App() {
     }
   })
 
+const formatarData = (data) => {
+  const [ano, mes, dia] = data.split('-')
+  return `${dia}/${mes}`
+}
+
   return (
     <ImageBackground style={styles.container}
       source={require('./assets/bg-overlay.png')}>
@@ -47,7 +52,9 @@ export default function App() {
         renderSectionHeader={({ section }) => (
           <View style={styles.card} >
 
-            <Text style={styles.data}> {section.title} </Text>
+            <Text style={styles.data}>
+  {formatarData(section.title)}
+</Text>
               {
                 section.data.map((jogo) => (
                   <GameCard key={jogo.id} game={jogo} />
