@@ -4,7 +4,9 @@ import dados from './assets/dados.json'
 
 export default function App() {
 
-  const jogos = dados.jogos
+  const jogos = dados.jogos.sort((a, b) => {
+  return a.hora_brasilia.localeCompare(b.hora_brasilia);
+});
 
   const agruparPorData = (jogos) => {
     return jogos.reduce((acc, jogo) => {
@@ -35,6 +37,7 @@ const formatarData = (data) => {
   const [ano, mes, dia] = data.split('-')
   return `${dia}/${mes}`
 }
+const hoje = new Date().toISOString().split('T')[0];
 
   return (
     <ImageBackground style={styles.container}
@@ -45,30 +48,36 @@ const formatarData = (data) => {
 
       <Text style={styles.title}>CALENDÁRIO</Text>
 
-      <SectionList
-        sections={jogosTratados}
-        keyExtractor={(item, index) => item + index}
-        renderItem={() => null}
-        renderSectionHeader={({ section }) => (
-          <View style={styles.card} >
+<SectionList
+  sections={jogosTratados}
+  keyExtractor={(item, index) => item + index}
+  renderItem={() => null}
+  renderSectionHeader={({ section }) => {
 
-            <Text style={styles.data}>
-  {formatarData(section.title)}
-</Text>
-              {
-                section.data.map((jogo) => (
-                  <GameCard key={jogo.id} game={jogo} />
-                ))
-              }
+    const isHoje = section.title === hoje;
 
+    return (
+      <View
+        style={[
+          styles.card,
+          isHoje && styles.cardHoje
+        ]}
+      >
 
+        <Text style={styles.data}>
+          {formatarData(section.title)}
+        </Text>
 
-          </View>
-        )
+        {
+          section.data.map((jogo) => (
+            <GameCard key={jogo.id} game={jogo} />
+          ))
         }
 
-
-      />
+      </View>
+    );
+  }}
+/>
 
     </ImageBackground>
   );
@@ -113,4 +122,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#1e2d3d',
     paddingBottom: 15
   },
+  cardHoje: {
+  borderWidth: 2,
+  borderColor: '#f2cc2f',
+  backgroundColor: '#142b42',
+}
 });

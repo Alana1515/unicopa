@@ -8,9 +8,17 @@ export default function GameCard({ game }) {
         KOR: require('../assets/jogos/south korea.png'),
         CZE: require('../assets/jogos/czech republic.png'),
     }
+    const jogoDoBrasil =
+    game.sigla_casa === 'BRA' ||
+    game.sigla_fora === 'BRA';
 
     return (
-        <View style={styles.jogo}>
+        <View
+  style={[
+    styles.jogo,
+    jogoDoBrasil && styles.destaqueBrasil
+  ]}
+>
 
             <Text style={styles.grupo}>
                 GRUPO {game.grupo}  {game.confronto}
@@ -101,5 +109,12 @@ const styles = StyleSheet.create({
   subTitulo: {
     color: '#8fa3b8',
     fontSize: 12
-  }
+  },
+  destaqueBrasil: {
+  backgroundColor: '#16324f',
+  borderWidth: 2,
+  borderColor: '#f2cc2f',
+  borderRadius: 10,
+  padding: 10,
+}
 });
